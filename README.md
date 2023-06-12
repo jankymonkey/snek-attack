@@ -12,3 +12,22 @@ pip install -r requirements.txt
 # in virtual env
 deactivate # exit virtual env
 ```
+
+TODO:
+
+- [ ] Language - Python
+- [ ] Screen capture
+- [ ] Image recognition
+- [ ] Keyboard input
+- [ ] Solve the game!
+- [ ] Unsupervised learning
+
+Ways of working
+
+- [ ] Every week Mon 1 hour
+- [ ] Mob for first few sessions
+- [ ] References:
+      https://pythonguides.com/python-screen-capture/
+      https://docs.opencv.org/4.7.0/d2/da2/tutorial_dnn_objdetect.html
+      https://www.python.org/
+      https://krisjet.itch.io/snek

@@ -1,2 +1,5 @@
 pyautogui!=0.9.54
+Pillow==9.5.0
 pyscreeze==0.1.28
+numpy==1.24.3
+opencv-python==4.7.0.72
