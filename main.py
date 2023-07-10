@@ -19,64 +19,88 @@ out = cv2.VideoWriter("output.mp4", fourcc, fps, SCREEN_SIZE)
 # the time you want to record in seconds
 record_seconds = 10
 
-while True:
-    play_button = pyautogui.locateOnScreen("./run_game.png")
-    time.sleep(1)
-    if play_button != None:
-        print(play_button)
-        play_button_center = pyautogui.center(play_button)
-        play_button_x, play_button_y = play_button_center
-        print("run game button")
-        print(play_button_x, play_button_y)
-        pyautogui.click(play_button_x / 2, play_button_y / 2)
-        break
+print("scrolling")
+time.sleep(1)
+pyautogui.scroll(-5, 10, 1117 / 2)
+print("scrolled")
+
+
+def clickImageButton(imageName, numOfClicks=10):
+    while True:
+        button = pyautogui.locateOnScreen(imageName, grayscale=True, confidence=0.8)
+        time.sleep(1)
+        if button != None:
+            print(button)
+            button_center = pyautogui.center(button)
+            button_x, button_y = button_center
+            print("clicking" + imageName)
+            print(button_x, button_y)
+            pyautogui.click(button_x / 2, button_y / 2, numOfClicks)
+            break
+
+
+clickImageButton("./run_game.png")
+clickImageButton("./submit.png")
+clickImageButton("./menu.png", 8)
 
 while True:
-    submit = pyautogui.locateOnScreen("./submit.png", confidence=0.8)
-
-    time.sleep(1)
-
-    if submit != None:
-        submit_center = pyautogui.center(submit)
-        submit_x, submit_y = submit_center
-        print("submit button")
-        print(submit_x, submit_y)
-        pyautogui.click(submit_x / 2, submit_y / 2, 2) # TODO: not clicking!
-        print("clicked!")
+    time.sleep(0.5)
+    wonder_theme = pyautogui.locateOnScreen(
+        "./wonder_theme.png", grayscale=True, confidence=0.8
+    )
+    if wonder_theme != None:
         break
+    palette = pyautogui.locateOnScreen("./palette.png", grayscale=True, confidence=0.8)
+    if palette != None:
+        palette_button = pyautogui.center(palette)
+        palette_button_x, palette_button_y = palette_button
+        pyautogui.click(palette_button_x / 2 + 150, palette_button_y / 2, 5)
 
-for i in range(int(record_seconds * fps)):
-    # make a screenshot
-    img = pyautogui.screenshot()
-    # convert these pixels to a proper numpy array to work with OpenCV
-    frame = np.array(img)
-    frame = cv2.resize(frame, SCREEN_SIZE)
-    # convert colors from BGR to RGB
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+clickImageButton("./menu.png", 8)
+clickImageButton("./play.png")
 
-    # https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html
-    # submit_button = cv2.imread("./submit.png")
-    # submit = cv2.matchTemplate(frame, submit_button, cv2.TM_CCOEFF)
-    # min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(submit)
-    # left, top = min_loc
-    # bottom, right = max_loc
-    # submit_center = pyautogui.center(Box(left, top, right - left, bottom - top))
-    # submit_x, submit_y = submit_center
-    # print(submit_x, submit_y)
-    # pyautogui.click(submit_x, submit_y)
+while True:
+    time.sleep(0.3)
+    pyautogui.press("left")
+    time.sleep(0.3)
+    pyautogui.press("down")
+    time.sleep(0.3)
+    pyautogui.press("right")
+    time.sleep(0.3)
+    pyautogui.press("up")
 
-    # print(min_val, max_val, min_loc, max_loc)
-    # if submit:
-    #     break
+# for i in range(int(record_seconds * fps)):
+#     # make a screenshot
+#     img = pyautogui.screenshot()
+#     # convert these pixels to a proper numpy array to work with OpenCV
+#     frame = np.array(img)
+#     frame = cv2.resize(frame, SCREEN_SIZE)
+#     # convert colors from BGR to RGB
+#     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    # write the frame
-    out.write(frame)
-    # show the frame
-    # cv2.imshow("screenshot", frame)
-    # if the user clicks q, it exits
-    if cv2.waitKey(1) == ord("q"):
-        break
+#     # https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html
+#     # submit_button = cv2.imread("./submit.png")
+#     # submit = cv2.matchTemplate(frame, submit_button, cv2.TM_CCOEFF)
+#     # min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(submit)
+#     # left, top = min_loc
+#     # bottom, right = max_loc
+#     # submit_center = pyautogui.center(Box(left, top, right - left, bottom - top))
+#     # submit_x, submit_y = submit_center
+#     # print(submit_x, submit_y)
+#     # pyautogui.click(submit_x, submit_y)
 
-# make sure everything is closed when exited
-out.release()
-cv2.destroyAllWindows()
+#     # print(min_val, max_val, min_loc, max_loc)
+#     # if submit:
+#     #     break
+
+#     # write the frame
+#     out.write(frame)
+#     # show the frame
+#     # cv2.imshow("screenshot", frame)
+#     # if the user clicks q, it exits
+#     if cv2.waitKey(1) == ord("q"):
+#         break
+
+# # make sure everything is closed when exited
+# out.release()
+# cv2.destroyAllWindows()
