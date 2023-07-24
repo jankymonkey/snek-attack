@@ -2,6 +2,8 @@
 
 ## Setup
 
+Before running the program, go to System Preferences -> Security & Privacy -> Privacy tab -> Accessibility -> Check Visual Studio Code.app
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate # activate virtual env
