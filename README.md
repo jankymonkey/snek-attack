@@ -31,5 +31,6 @@ Ways of working
 - [ ] References:
       https://pythonguides.com/python-screen-capture/
       https://docs.opencv.org/4.7.0/d2/da2/tutorial_dnn_objdetect.html
+      https://gymnasium.farama.org/content/basic_usage/
       https://www.python.org/
       https://krisjet.itch.io/snek

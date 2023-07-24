@@ -35,7 +35,6 @@ def click(x, y):
 def clickImageButton(imageName):
     while True:
         button = pyautogui.locateOnScreen(imageName, grayscale=True, confidence=0.8)
-        time.sleep(1)
         if button != None:
             print(button)
             button_center = pyautogui.center(button)
@@ -51,7 +50,6 @@ clickImageButton("./submit.png")
 clickImageButton("./menu.png")
 
 while True:
-    time.sleep(0.5)
     wonder_theme = pyautogui.locateOnScreen(
         "./wonder_theme.png", grayscale=True, confidence=0.8
     )
