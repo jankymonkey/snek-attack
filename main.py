@@ -25,7 +25,14 @@ pyautogui.scroll(-5, 10, 1117 / 2)
 print("scrolled")
 
 
-def clickImageButton(imageName, numOfClicks=10):
+def click(x, y):
+    pyautogui.moveTo(x, y)
+    pyautogui.mouseDown()
+    time.sleep(0.5)  # or whatever you need, if even needed
+    pyautogui.mouseUp()
+
+
+def clickImageButton(imageName):
     while True:
         button = pyautogui.locateOnScreen(imageName, grayscale=True, confidence=0.8)
         time.sleep(1)
@@ -35,13 +42,13 @@ def clickImageButton(imageName, numOfClicks=10):
             button_x, button_y = button_center
             print("clicking" + imageName)
             print(button_x, button_y)
-            pyautogui.click(button_x / 2, button_y / 2, numOfClicks)
+            click(button_x / 2, button_y / 2)
             break
 
 
 clickImageButton("./run_game.png")
 clickImageButton("./submit.png")
-clickImageButton("./menu.png", 8)
+clickImageButton("./menu.png")
 
 while True:
     time.sleep(0.5)
@@ -54,9 +61,9 @@ while True:
     if palette != None:
         palette_button = pyautogui.center(palette)
         palette_button_x, palette_button_y = palette_button
-        pyautogui.click(palette_button_x / 2 + 150, palette_button_y / 2, 5)
+        click(palette_button_x / 2 + 150, palette_button_y / 2)
 
-clickImageButton("./menu.png", 8)
+clickImageButton("./menu.png")
 clickImageButton("./play.png")
 
 while True:
