@@ -9,7 +9,7 @@ url = "https://krisjet.itch.io/snek"
 webbrowser.open(url, new=0, autoraise=True)
 
 # display screen resolution, get it using pyautogui itself
-SCREEN_SIZE = (1728, 1117)
+SCREEN_SIZE = pyautogui.size()
 # define the codec
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
 # frames per second
@@ -21,7 +21,7 @@ record_seconds = 10
 
 print("scrolling")
 time.sleep(1)
-pyautogui.scroll(-5, 10, 1117 / 2)
+pyautogui.scroll(-5, 10, SCREEN_SIZE.height / 2)
 print("scrolled")
 
 
