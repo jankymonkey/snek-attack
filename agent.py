@@ -161,7 +161,7 @@ for _ in range(1000):
     action = agent.get_action(obs)
     observation, reward, terminated, truncated, info = env.step(action)
 
-    obs = observation
-
     if terminated or truncated:
         observation, info = env.reset()
+
+    obs = observation
