@@ -8,6 +8,7 @@ Before running the program, go to System Preferences -> Security & Privacy -> Pr
 python3 -m venv .venv
 source .venv/bin/activate # activate virtual env
 pip install -r requirements.txt
+playwright install
 ```
 
 ```bash
@@ -34,3 +35,4 @@ Ways of working
       https://gymnasium.farama.org/content/basic_usage/
       https://www.python.org/
       https://krisjet.itch.io/snek
+      https://medium.com/ci-t/training-an-agent-to-play-the-ney-boy-challenge-part-1-245809beb368
