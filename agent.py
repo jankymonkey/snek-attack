@@ -11,6 +11,14 @@ from tqdm import tqdm
 
 import gymnasium as gym
 
+from gymnasium.envs.registration import register
+
+register(
+     id="snek-v0",
+     entry_point="envs:GridWorldEnv",
+     max_episode_steps=300,
+)
+
 env_id = "Taxi-v3"
 
 
@@ -18,7 +26,8 @@ env_id = "Taxi-v3"
 # Note: We are going to follow the rules from Sutton & Barto.
 # Other versions of the game can be found below for you to experiment.
 
-env = gym.make(env_id)
+# env = gym.make(env_id)
+env = gym.make('snek-v0')
 
 # reset the environment to get the first observation
 done = False
@@ -154,14 +163,16 @@ for episode in tqdm(range(n_episodes)):
 # plt.tight_layout()
 # plt.show()
 
-env = gym.make(env_id, render_mode="human")
-obs, info = env.reset()
+# env = gym.make(env_id, render_mode="human")
 
-for _ in range(1000):
-    action = agent.get_action(obs)
-    observation, reward, terminated, truncated, info = env.step(action)
 
-    if terminated or truncated:
-        observation, info = env.reset()
+# obs, info = env.reset()
 
-    obs = observation
+# for _ in range(1000):
+#     action = agent.get_action(obs)
+#     observation, reward, terminated, truncated, info = env.step(action)
+
+#     if terminated or truncated:
+#         observation, info = env.reset()
+
+#     obs = observation
