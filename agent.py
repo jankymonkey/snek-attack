@@ -14,20 +14,19 @@ import gymnasium as gym
 from gymnasium.envs.registration import register
 
 register(
-     id="snek-v0",
-     entry_point="envs:GridWorldEnv",
-     max_episode_steps=300,
+    id="snek-v0",
+    entry_point="envs:SnekWorldEnv",
+    max_episode_steps=300,
 )
 
-env_id = "Taxi-v3"
+env_id = "snek-v0"
 
 
 # Let's start by creating the blackjack environment.
 # Note: We are going to follow the rules from Sutton & Barto.
 # Other versions of the game can be found below for you to experiment.
 
-# env = gym.make(env_id)
-env = gym.make('snek-v0')
+env = gym.make(env_id)
 
 # reset the environment to get the first observation
 done = False
@@ -36,7 +35,7 @@ observation, info = env.reset()
 # observation = (16, 9, False)
 
 
-class BlackjackAgent:
+class EpsilonAgent:
     def __init__(
         self,
         learning_rate: float,
@@ -109,7 +108,7 @@ start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
 final_epsilon = 0.1
 
-agent = BlackjackAgent(
+agent = EpsilonAgent(
     learning_rate=learning_rate,
     initial_epsilon=start_epsilon,
     epsilon_decay=epsilon_decay,
