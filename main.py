@@ -45,24 +45,26 @@ def clickImageButton(imageName):
             break
 
 
-clickImageButton("./run_game.png")
-clickImageButton("./submit.png")
-clickImageButton("./menu.png")
+clickImageButton("./images/run_game.png")
+clickImageButton("./images/submit.png")
+clickImageButton("./images/menu.png")
 
 while True:
     wonder_theme = pyautogui.locateOnScreen(
-        "./wonder_theme.png", grayscale=True, confidence=0.8
+        "./images/wonder_theme.png", grayscale=True, confidence=0.8
     )
     if wonder_theme != None:
         break
-    palette = pyautogui.locateOnScreen("./palette.png", grayscale=True, confidence=0.8)
+    palette = pyautogui.locateOnScreen(
+        "./images/palette.png", grayscale=True, confidence=0.8
+    )
     if palette != None:
         palette_button = pyautogui.center(palette)
         palette_button_x, palette_button_y = palette_button
         click(palette_button_x / 2 + 150, palette_button_y / 2)
 
-clickImageButton("./menu.png")
-clickImageButton("./play.png")
+clickImageButton("./images/menu.png")
+clickImageButton("./images/play.png")
 
 while True:
     time.sleep(0.3)
