@@ -1,1 +1,1 @@
-from envs.snek_world import GridWorldEnv
+from envs.snek_world import SnekWorldEnv
