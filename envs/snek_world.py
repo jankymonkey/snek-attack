@@ -2,12 +2,15 @@ import numpy as np
 
 import gymnasium as gym
 from gymnasium import spaces
+from .snek import Snek
 
 
 class SnekWorldEnv(gym.Env):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
 
     def __init__(self, render_mode=None, size=5):
+        self.game = Snek()
+
         self.size = size  # The size of the square grid
         # self.window_size = 512  # The size of the PyGame window
 
@@ -31,10 +34,10 @@ class SnekWorldEnv(gym.Env):
         I.e. 0 corresponds to "right", 1 to "up" etc.
         """
         self._action_to_direction = {
-            0: np.array([1, 0]),
-            1: np.array([0, 1]),
-            2: np.array([-1, 0]),
-            3: np.array([0, -1]),
+            0: np.array([1, 0]),  # right
+            1: np.array([0, 1]),  # up
+            2: np.array([-1, 0]),  # left
+            3: np.array([0, -1]),  # down
         }
 
         assert render_mode is None or render_mode in self.metadata["render_modes"]
@@ -51,8 +54,8 @@ class SnekWorldEnv(gym.Env):
         self.clock = None
 
     def _get_obs(self):
-        snek_row = self._snek_y
-        snek_col = self._snek_x
+        snek_row = self.game.snek[1]
+        snek_col = self.game.snek[0]
         total_rows = 19
         total_cols = 11
         possible_location = total_rows * total_cols
@@ -60,7 +63,8 @@ class SnekWorldEnv(gym.Env):
         return (snek_row * total_rows + snek_col) * possible_location + destination
 
     def _get_info(self):
-        print("getting info...")
+        # print("getting info...")
+        self.game.render()
         return {}
         # return {
         #     "distance": np.linalg.norm(
@@ -71,13 +75,15 @@ class SnekWorldEnv(gym.Env):
     def step(self, action):
         # Map the action (element of {0,1,2,3}) to the direction we walk in
         direction = self._action_to_direction[action]
+
+        self.game.update(direction)
         # We use `np.clip` to make sure we don't leave the grid
         # self._agent_location = np.clip(
         #     self._agent_location + direction, 0, self.size - 1
         # )
         # An episode is done iff the agent has reached the target
         # terminated = np.array_equal(self._agent_location, self._target_location)
-        terminated = True
+        terminated = np.array_equal(self.game.snek, self.game.food)
         reward = 1 if terminated else 0  # Binary sparse rewards
         observation = self._get_obs()
         info = self._get_info()

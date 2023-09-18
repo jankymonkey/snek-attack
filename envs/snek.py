@@ -1,61 +1,67 @@
-from playwright.sync_api import sync_playwright
-import pathlib
-
-DEFAULT_NAVIGATION_TIMEOUT = 60 * 1000
-DEFAULT_GAME_URL = "https://krisjet.itch.io/snek"
+import numpy as np
+import pygame
 
 
-class Game:
-    def __init__(
-        self,
-        headless=True,
-        user_data_dir=None,
-        navigation_timeout=DEFAULT_NAVIGATION_TIMEOUT,
-        game_url=DEFAULT_GAME_URL,
-        browser_ws_endpoint=None,
-        initial_width=180,
-        initial_height=320,
-    ):
-        self.initial_width = initial_width
-        self.initial_height = initial_height
-        self.headless = headless
-        self.user_data_dir = user_data_dir
-        self.navigation_timeout = navigation_timeout
-        self.is_running = False
-        self.browser = None
-        self.page = None
-        self.state = None
-        self._dims = None
-        # self.game_id = str(uuid.uuid4())
-        self.state_id = 0
-        self.game_url = game_url
-        self.browser_ws_endpoint = browser_ws_endpoint
+class Snek:
+    cell_size = 50
 
-    # DO WE NEED ASYNC?
-    # https://github.com/fabito/gym-neyboy/blob/d71b0fb707a366270649b8d9144384ee35cc26a9/gym_neyboy/envs/neyboy.py#L62C5-L62C10
-    def initialize(self):
-        with sync_playwright() as p:
-            for browser_type in [p.chromium]:
-                self.browser = browser_type.launch()
-                self.page = self.browser.new_page()
-                self.page.goto(self.game_url)
-                envjs_path = pathlib.Path(__file__).resolve().parent.joinpath("env.js")
-                self.page.add_script_tag(path=str(envjs_path))
-                # self.is_ready()
-                self.page.screenshot(path=f'example-{browser_type.name}.png')
+    def __init__(self):
+        pygame.init()
+        self.size = np.array([11, 19])
 
-    @staticmethod
-    def create(
-        headless=True,
-        user_data_dir=None,
-        navigation_timeout=DEFAULT_NAVIGATION_TIMEOUT,
-        game_url=DEFAULT_GAME_URL,
-        browser_ws_endpoint=None,
-    ) -> "Game":
-        o = Game(
-            headless, user_data_dir, navigation_timeout, game_url, browser_ws_endpoint
+        self.snek = np.array([5, 10])
+
+        self.food = np.array([1, 1])
+
+        self.img = pygame.transform.scale(
+            pygame.image.load("./images/foodie.png"), (self.cell_size, self.cell_size)
         )
-        o.initialize()
-        return o
 
-Game.create()
+    def update(self, direction):
+        self.snek = np.clip(self.snek + direction, 0, self.size - 1)
+
+    def render(self):
+        grid = np.zeros(self.size)
+        grid[self.snek[0], self.snek[1]] = 1
+        grid[self.food[0], self.food[1]] = 2
+
+        grid = np.fliplr(np.flip(np.transpose(grid)))
+
+        blue = (0, 0, 255)
+        red = (255, 0, 0)
+        green = (0, 255, 0)
+
+        screen = pygame.display.set_mode(
+            (grid.shape[1] * self.cell_size, grid.shape[0] * self.cell_size)
+        )
+
+        # Render the array as a grid
+        for i in range(grid.shape[0]):
+            for j in range(grid.shape[1]):
+                color = blue
+                if grid[i, j] == 1:
+                    color = red
+                elif grid[i, j] == 2:
+                    screen.blit(self.img, (j * self.cell_size, i * self.cell_size))
+                    continue
+                pygame.draw.rect(
+                    screen,
+                    color,
+                    (
+                        j * self.cell_size,
+                        i * self.cell_size,
+                        self.cell_size,
+                        self.cell_size,
+                    ),
+                )
+
+        pygame.display.flip()
+
+
+# jw = Snek()
+# jw.update(np.array([0, 1]))
+# jw.update(np.array([0, 1]))
+# jw.update(np.array([0, 1]))
+# jw.update(np.array([0, 1]))
+# jw.update(np.array([0, 1]))
+# jw.render()

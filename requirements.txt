@@ -6,4 +6,5 @@ opencv-python==4.7.0.72
 gymnasium==0.29.0
 gymnasium[box2d]==0.29.0
 tqdm==4.65.0
-pytest-playwright==0.4.2
+# pytest-playwright==0.4.2
+pygame==2.5.2
