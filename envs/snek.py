@@ -25,11 +25,10 @@ class Snek:
         grid[self.snek[0], self.snek[1]] = 1
         grid[self.food[0], self.food[1]] = 2
 
-        grid = np.fliplr(np.flip(np.transpose(grid)))
+        grid = np.flipud(np.transpose(grid))
 
-        blue = (0, 0, 255)
-        red = (255, 0, 0)
-        green = (0, 255, 0)
+        background = (0, 0, 0)
+        snek = (255, 0, 0)
 
         screen = pygame.display.set_mode(
             (grid.shape[1] * self.cell_size, grid.shape[0] * self.cell_size)
@@ -38,9 +37,9 @@ class Snek:
         # Render the array as a grid
         for i in range(grid.shape[0]):
             for j in range(grid.shape[1]):
-                color = blue
+                color = background
                 if grid[i, j] == 1:
-                    color = red
+                    color = snek
                 elif grid[i, j] == 2:
                     screen.blit(self.img, (j * self.cell_size, i * self.cell_size))
                     continue
