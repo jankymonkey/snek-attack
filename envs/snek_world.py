@@ -64,7 +64,6 @@ class SnekWorldEnv(gym.Env):
 
     def _get_info(self):
         # print("getting info...")
-        self.game.render()
         return {}
         # return {
         #     "distance": np.linalg.norm(
@@ -84,12 +83,13 @@ class SnekWorldEnv(gym.Env):
         # An episode is done iff the agent has reached the target
         # terminated = np.array_equal(self._agent_location, self._target_location)
         terminated = np.array_equal(self.game.snek, self.game.food)
-        reward = 1 if terminated else 0  # Binary sparse rewards
+        reward = 1 if terminated else -1  # Binary sparse rewards
         observation = self._get_obs()
         info = self._get_info()
 
         if self.render_mode == "human":
-            print("render game...")
+            # print("render game...")
+            self.game.render()
             # self._render_frame()
 
         return observation, reward, terminated, False, info

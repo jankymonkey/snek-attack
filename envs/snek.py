@@ -17,6 +17,12 @@ class Snek:
             pygame.image.load("./images/foodie.png"), (self.cell_size, self.cell_size)
         )
 
+        grid = np.zeros(self.size)
+        grid = np.flipud(np.transpose(grid))
+        self.screen = pygame.display.set_mode(
+            (grid.shape[1] * self.cell_size, grid.shape[0] * self.cell_size)
+        )
+
     def update(self, direction):
         self.snek = np.clip(self.snek + direction, 0, self.size - 1)
 
@@ -30,10 +36,6 @@ class Snek:
         background = (0, 0, 0)
         snek = (255, 0, 0)
 
-        screen = pygame.display.set_mode(
-            (grid.shape[1] * self.cell_size, grid.shape[0] * self.cell_size)
-        )
-
         # Render the array as a grid
         for i in range(grid.shape[0]):
             for j in range(grid.shape[1]):
@@ -41,10 +43,10 @@ class Snek:
                 if grid[i, j] == 1:
                     color = snek
                 elif grid[i, j] == 2:
-                    screen.blit(self.img, (j * self.cell_size, i * self.cell_size))
+                    self.screen.blit(self.img, (j * self.cell_size, i * self.cell_size))
                     continue
                 pygame.draw.rect(
-                    screen,
+                    self.screen,
                     color,
                     (
                         j * self.cell_size,
@@ -54,7 +56,7 @@ class Snek:
                     ),
                 )
 
-        pygame.display.flip()
+        pygame.display.update()
 
 
 # jw = Snek()
