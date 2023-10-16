@@ -11,6 +11,8 @@ from tqdm import tqdm
 
 import gymnasium as gym
 
+import time
+
 from gymnasium.envs.registration import register
 
 register(
@@ -162,16 +164,19 @@ for episode in tqdm(range(n_episodes)):
 # plt.tight_layout()
 # plt.show()
 
-# env = gym.make(env_id, render_mode="human")
+env = gym.make(env_id, render_mode="human")
 
 
-# obs, info = env.reset()
+obs, info = env.reset()
 
-# for _ in range(1000):
-#     action = agent.get_action(obs)
-#     observation, reward, terminated, truncated, info = env.step(action)
+for i in range(1000):
+    time.sleep(0.05)
+    action = agent.get_action(obs)
+    observation, reward, terminated, truncated, info = env.step(action)
 
-#     if terminated or truncated:
-#         observation, info = env.reset()
+    if terminated or truncated:
+        observation, info = env.reset()
 
-#     obs = observation
+    obs = observation
+
+time.sleep(1000)
