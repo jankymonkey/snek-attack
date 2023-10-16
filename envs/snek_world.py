@@ -83,6 +83,7 @@ class SnekWorldEnv(gym.Env):
         # An episode is done iff the agent has reached the target
         # terminated = np.array_equal(self._agent_location, self._target_location)
         terminated = np.array_equal(self.game.snek, self.game.food)
+
         reward = 1 if terminated else -1  # Binary sparse rewards
         observation = self._get_obs()
         info = self._get_info()
@@ -98,11 +99,7 @@ class SnekWorldEnv(gym.Env):
         # We need the following line to seed self.np_random
         super().reset(seed=seed)
 
-        self._snek_x = 0
-        self._snek_y = 0
-
-        self._target_x = 0
-        self._target_y = 0
+        self.game = Snek()
 
         # Choose the agent's location uniformly at random
         # self._agent_location = self.np_random.integers(0, self.size, size=2, dtype=int)
@@ -118,7 +115,8 @@ class SnekWorldEnv(gym.Env):
         info = self._get_info()
 
         if self.render_mode == "human":
-            print("render game...")
+            # print("render game...")
+            self.game.render()
             # self._render_frame()
 
         return observation, info

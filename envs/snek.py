@@ -9,9 +9,9 @@ class Snek:
         pygame.init()
         self.size = np.array([11, 19])
 
-        self.snek = np.array([5, 10])
+        self.snek = np.array([np.random.randint(0, 11), np.random.randint(0, 19)])
 
-        self.food = np.array([1, 1])
+        self.food = np.array([np.random.randint(0, 11), np.random.randint(0, 19)])
 
         self.img = pygame.transform.scale(
             pygame.image.load("./images/foodie.png"), (self.cell_size, self.cell_size)
