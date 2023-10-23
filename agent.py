@@ -15,6 +15,8 @@ import time
 
 from gymnasium.envs.registration import register
 
+import pickle
+
 register(
     id="snek-v0",
     entry_point="envs:SnekWorldEnv",
@@ -45,6 +47,7 @@ class EpsilonAgent:
         epsilon_decay: float,
         final_epsilon: float,
         discount_factor: float = 0.95,
+        model_q_values: dict = None,
     ):
         """Initialize a Reinforcement Learning agent with an empty dictionary
         of state-action values (q_values), a learning rate and an epsilon.
@@ -57,6 +60,11 @@ class EpsilonAgent:
             discount_factor: The discount factor for computing the Q-value
         """
         self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
+
+        if model_q_values:
+            self.q_values.update(model_q_values)
+
+        print(len(self.q_values.keys()))
 
         self.lr = learning_rate
         self.discount_factor = discount_factor
@@ -103,6 +111,11 @@ class EpsilonAgent:
         self.epsilon = max(self.final_epsilon, self.epsilon - epsilon_decay)
 
 
+model_q_values = None
+
+with open("model", "rb") as r:
+    model_q_values = pickle.load(r)
+
 # hyperparameters
 learning_rate = 0.01
 n_episodes = 100_000
@@ -115,6 +128,7 @@ agent = EpsilonAgent(
     initial_epsilon=start_epsilon,
     epsilon_decay=epsilon_decay,
     final_epsilon=final_epsilon,
+    model_q_values=model_q_values,
 )
 
 # env = gym.wrappers.RecordEpisodeStatistics(env, deque_size=n_episodes)
@@ -135,6 +149,9 @@ for episode in tqdm(range(n_episodes)):
         obs = next_obs
 
     agent.decay_epsilon()
+
+with open("model", "wb") as f:
+    pickle.dump(dict(agent.q_values), f)
 
 # rolling_length = 500
 # fig, axs = plt.subplots(ncols=3, figsize=(12, 5))
