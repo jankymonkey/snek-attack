@@ -16,7 +16,7 @@ class SnekWorldEnv(gym.Env):
 
         # Observations are dictionaries with the agent's and the target's location.
         # Each location is encoded as an element of {0, ..., `size`}^2, i.e. MultiDiscrete([size, size]).
-        self.observation_space = spaces.Discrete(73985)
+        self.observation_space = spaces.Discrete(70140)
 
         # spaces.Dict(
         #     {
@@ -59,8 +59,15 @@ class SnekWorldEnv(gym.Env):
         total_rows = 19
         total_cols = 11
         possible_location = total_rows * total_cols
-        destination = possible_location - 1
-        return (snek_row * total_rows + snek_col) * possible_location + destination
+
+        food_row = self.game.food[1]
+        food_col = self.game.food[0]
+        destination = food_row * (total_rows - 1) + food_col
+        return (
+            snek_row * (total_rows - 1) + snek_col
+        ) * possible_location + destination
+        # (18 * 18 + 10) * 19 * 11 +(18 * 18 + 10)
+        # (10 * 10 + 18) * 19 * 11 +(10 * 10 + 18)
 
     def _get_info(self):
         # print("getting info...")
@@ -84,7 +91,7 @@ class SnekWorldEnv(gym.Env):
         # terminated = np.array_equal(self._agent_location, self._target_location)
         terminated = np.array_equal(self.game.snek, self.game.food)
 
-        reward = 1 if terminated else -1  # Binary sparse rewards
+        reward = 10 if terminated else -1  # Binary sparse rewards
         observation = self._get_obs()
         info = self._get_info()
 
